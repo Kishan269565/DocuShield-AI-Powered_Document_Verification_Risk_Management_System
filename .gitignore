@@ -1,0 +1,8 @@
+# Environment variables
+.env
+.env.production
+uploads/
+# dependencies
+node_modules/
+
+

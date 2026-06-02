@@ -1,0 +1,10 @@
+export const RISK_WEIGHTS = {
+  UNKNOWN_IP: 15,
+  SUSPICIOUS_USER_AGENT: 10,
+  RAPID_REQUESTS: 20,
+  SENSITIVE_ACTION: 30,
+  MULTIPLE_FAILURES: 25,
+  INVALID_DOCUMENT: 40,
+  FORGED_DOCUMENT: 50,
+  TYPE_MISMATCH: 60,   // User declared wrong document type — high fraud signal
+};

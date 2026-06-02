@@ -1,0 +1,180 @@
+// ==========================
+// PRISMA CONFIG
+// ==========================
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ==========================
+// ENUMS
+// ==========================
+enum Role {
+  ADMIN
+  CUSTOMER
+  SANCTION_MANAGER
+  LEAD
+}
+
+enum DocumentStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  FLAGGED
+}
+
+enum RiskLevel {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum AIVerdict {
+  APPROVE
+  REVIEW
+  REJECT
+}
+
+enum SanctionDecisionType {
+  APPROVE
+  REJECT
+  FLAG
+}
+
+// ==========================
+// USER
+// ==========================
+model User {
+  id             Int                @id @default(autoincrement())
+  email          String             @unique
+  password       String
+  role           Role               @default(CUSTOMER)
+
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt
+
+  documents      Document[]
+  auditLogs      AuditLog[]
+  behaviorEvents BehaviorEvent[]
+  decisions      SanctionDecision[] @relation("DecidedBy")
+}
+
+// ==========================
+// DOCUMENT
+// ==========================
+model Document {
+  id          Int            @id @default(autoincrement())
+  title       String
+  content     String
+
+  filePath    String?
+  fileType    String?
+
+  status      DocumentStatus @default(PENDING)
+
+  ownerId     Int
+  owner       User           @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  sanctionDecisions SanctionDecision[]
+  riskSnapshot      DocumentRiskSnapshot?
+  aiExtraction      DocumentAIExtraction?
+}
+
+// ==========================
+// SANCTION DECISION
+// ==========================
+model SanctionDecision {
+  id           Int                  @id @default(autoincrement())
+  documentId   Int
+  decision     SanctionDecisionType
+  reason       String?
+
+  decidedById  Int
+  decidedBy    User @relation("DecidedBy", fields: [decidedById], references: [id])
+
+  createdAt    DateTime @default(now())
+
+  document     Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+}
+
+// ==========================
+// DOCUMENT RISK SNAPSHOT
+// ==========================
+model DocumentRiskSnapshot {
+  id         Int       @id @default(autoincrement())
+  documentId Int       @unique
+
+  riskScore  Int
+  riskLevel  RiskLevel
+
+  aiVerdict  AIVerdict
+  aiReason   String
+
+  policyFlags   Json   @default("[]")
+  behaviorFlags Json   @default("[]")
+
+  createdAt DateTime @default(now())
+
+  document  Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+}
+
+// ==========================
+// DOCUMENT AI EXTRACTION ✅ NEW
+// ==========================
+model DocumentAIExtraction {
+  id         Int      @id @default(autoincrement())
+  documentId Int      @unique
+
+  rawText           String?
+  wordCount         Int?
+  containsSensitive Boolean @default(false)
+  detectedKeywords  Json    @default("[]")
+
+  isBlurry        Boolean?
+  possibleForgery Boolean?
+  imageNotes      Json    @default("[]")
+
+  extractedAt DateTime @default(now())
+
+  document Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+}
+
+
+// ==========================
+// AUDIT LOG
+// ==========================
+model AuditLog {
+  id        Int      @id @default(autoincrement())
+  action    String
+  payload   Json     @default("{}")
+  hash      String
+
+  userId    Int?
+  user      User?    @relation(fields: [userId], references: [id])
+
+  timestamp DateTime @default(now())
+}
+
+// ==========================
+// BEHAVIOR EVENTS
+// ==========================
+model BehaviorEvent {
+  id        Int      @id @default(autoincrement())
+  type      String
+  ip        String
+  userAgent String?
+  metadata  Json     @default("{}")
+
+  userId    Int?
+  user      User?    @relation(fields: [userId], references: [id])
+
+  timestamp DateTime @default(now())
+}

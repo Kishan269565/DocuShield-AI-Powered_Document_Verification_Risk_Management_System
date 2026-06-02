@@ -1,0 +1,5 @@
+export type IntelligenceFlag =
+  | "DUMMY_DOCUMENT"
+  | "SEMANTICALLY_INVALID"
+  | "POSSIBLE_FORGERY"
+  | "UNKNOWN_DOCUMENT_TYPE";
