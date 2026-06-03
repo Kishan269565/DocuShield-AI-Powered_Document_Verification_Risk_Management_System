@@ -1,6 +1,6 @@
 import { DefenseAction } from "./actions.defense";
 import { DefenseContext, DefenseResult } from "./types.defense";
-import { PolicyDecision } from "@security/policy";
+import { PolicyDecision } from "../policy";
 
 export const runDefenseEngine = async (
   context: DefenseContext

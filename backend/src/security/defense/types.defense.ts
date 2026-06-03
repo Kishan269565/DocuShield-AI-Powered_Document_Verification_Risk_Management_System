@@ -1,4 +1,4 @@
-import { PolicyDecision } from "@security/policy";
+import { PolicyDecision } from "../policy";
 
 
 export interface DefenseContext {
