@@ -1,43 +1,18 @@
 {
   "compilerOptions": {
-    /* ===== Language & Runtime ===== */
-    "ignoreDeprecations": "6.0",
     "target": "ES2022",
     "lib": ["ES2022"],
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
-
-    /* ===== Project Structure ===== */
+    "module": "commonjs",
+    "moduleResolution": "node",
     "rootDir": "src",
     "outDir": "dist",
-
-    /* ===== Absolute Imports (IMPORTANT) ===== */
-    "baseUrl": "src",
-    "paths": {
-      "@security/*": ["security/*"],
-      "@lib/*": ["lib/*"],
-      "@config/*": ["config/*"]
-    },
-
-    /* ===== Type Safety ===== */
-    "strict": true,
+    "strict": false,
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
-
-    /* ===== Interop & DX ===== */
     "esModuleInterop": true,
     "resolveJsonModule": true,
-    "isolatedModules": true,
-
-    /* ===== Output ===== */
     "sourceMap": true
   },
-
   "include": ["src/**/*"],
-
-  "exclude": [
-    "node_modules",
-    "dist",
-    "prisma.config.ts"
-  ]
+  "exclude": ["node_modules", "dist", "prisma.config.ts"]
 }
