@@ -1,4 +1,14 @@
-"dependencies": {
+{
+  "name": "frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint"
+  },
+  "dependencies": {
     "@hookform/resolvers": "^3.9.0",
     "axios": "^1.7.0",
     "jwt-decode": "^4.0.0",
@@ -18,3 +28,4 @@
     "tailwindcss": "^4",
     "typescript": "^5"
   }
+}
