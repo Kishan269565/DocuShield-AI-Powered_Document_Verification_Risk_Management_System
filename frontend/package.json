@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "eslint"
   },
-"dependencies": {
+  "dependencies": {
     "@hookform/resolvers": "^3.9.0",
     "axios": "^1.7.0",
     "jwt-decode": "^4.0.0",
@@ -28,3 +28,4 @@
     "tailwindcss": "^4",
     "typescript": "^5"
   }
+}
