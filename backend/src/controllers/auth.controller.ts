@@ -22,19 +22,17 @@ export const register = async (req: Request, res: Response) => {
     },
   });
 
-  // ✅ CREATE JWT (same as login)
   const token = jwt.sign(
     { userId: user.id, role: user.role },
     process.env.JWT_SECRET!,
-    { expiresIn: "15m" }
+    { expiresIn: "7d" }
   );
 
-  // ✅ SET COOKIE
   res.cookie("token", token, {
     httpOnly: true,
-    secure: false, // local dev
-    sameSite: "lax",
-    maxAge: 15 * 60 * 1000,
+    secure: true,
+    sameSite: "none",
+    maxAge: 7 * 24 * 60 * 60 * 1000,
   });
 
   res.status(201).json({
@@ -62,14 +60,14 @@ export const login = async (req: Request, res: Response) => {
   const token = jwt.sign(
     { userId: user.id, role: user.role },
     process.env.JWT_SECRET!,
-    { expiresIn: "15m" }
+    { expiresIn: "7d" }
   );
 
   res.cookie("token", token, {
     httpOnly: true,
-    secure: false, // local dev
-    sameSite: "lax",
-    maxAge: 15 * 60 * 1000,
+    secure: true,
+    sameSite: "none",
+    maxAge: 7 * 24 * 60 * 60 * 1000,
   });
 
   res.json({

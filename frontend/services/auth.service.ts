@@ -5,11 +5,17 @@ export const login = async (email: string, password: string) => {
     email,
     password,
   });
-
-  const { token } = res.data;
-
-  // 🔐 Store JWT for authenticated requests
-  localStorage.setItem("token", token);
-
   return res.data;
+};
+
+export const register = async (email: string, password: string) => {
+  const res = await api.post("/auth/register", {
+    email,
+    password,
+  });
+  return res.data;
+};
+
+export const logout = async () => {
+  await api.post("/auth/logout");
 };
