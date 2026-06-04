@@ -8,13 +8,13 @@
     "start": "next start",
     "lint": "eslint"
   },
-  "dependencies": {
+"dependencies": {
     "@hookform/resolvers": "^3.9.0",
     "axios": "^1.7.0",
     "jwt-decode": "^4.0.0",
-    "next": "15.4.1",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "next": "16.1.5",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
     "react-hook-form": "^7.53.0",
     "zod": "^3.23.8"
   },
@@ -24,8 +24,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
-    "eslint-config-next": "15.4.1",
+    "eslint-config-next": "16.1.5",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
-}
