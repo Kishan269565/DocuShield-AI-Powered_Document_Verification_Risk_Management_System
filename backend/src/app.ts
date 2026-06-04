@@ -41,4 +41,12 @@ app.use("/api/documents", documentRoutes);
 app.use("/api/sanctions", sanctionRoutes);
 app.use("/api/admin", adminRoutes);
 
+app.get("/", (_req, res) => {
+  res.json({ status: "ok", message: "DocuShield API running 🚀" });
+});
+
+app.get("/api/health", (_req, res) => {
+  res.json({ status: "ok" });
+});
+
 export default app;
