@@ -2,20 +2,14 @@ import axios from "axios";
 
 const api = axios.create({
   baseURL: "https://docushield-backend-qn71.onrender.com/api",
-  withCredentials: true,
+  withCredentials: false,
   headers: {
     "Content-Type": "application/json",
   },
 });
 
-// Add token to every request
 api.interceptors.request.use((config) => {
-  // Get token from cookie
-  const token = document.cookie
-    .split("; ")
-    .find((row) => row.startsWith("token="))
-    ?.split("=")[1];
-
+  const token = localStorage.getItem("token");
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
