@@ -55,14 +55,28 @@ export default function AdminDashboard() {
   const [creating, setCreating] = useState(false);
   const router = useRouter();
 
-  useEffect(() => {
+useEffect(() => {
+    const token = localStorage.getItem("token");
+    const user = localStorage.getItem("user");
+
+    if (!token || !user) {
+      router.push("/admin/login");
+      return;
+    }
+
+    const parsedUser = JSON.parse(user);
+    if (parsedUser.role !== "ADMIN") {
+      router.push("/admin/login");
+      return;
+    }
+
     const fetchData = async () => {
       try {
         const res = await api.get<DashboardData>("/admin/dashboard");
         setData(res.data);
       } catch (error) {
         console.error("Failed to fetch admin data:", error);
-        router.push("/login");
+        router.push("/admin/login");
       } finally {
         setLoading(false);
       }
@@ -205,10 +219,11 @@ export default function AdminDashboard() {
             </div>
           </div>
           <button
-            onClick={() => {
-              document.cookie = "token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
-              router.push("/admin/login");
-            }}
+onClick={() => {
+  localStorage.removeItem("token");
+  localStorage.removeItem("user");
+  router.push("/admin/login");
+}}
             className="w-full px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-xl transition-all duration-200"
           >
             Logout
