@@ -50,12 +50,15 @@ export default function AdminDashboard() {
   const [data, setData] = useState<DashboardData | null>(null);
   const [activeTab, setActiveTab] = useState<Tab>("overview");
   const [loading, setLoading] = useState(true);
+  const [mounted, setMounted] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [creating, setCreating] = useState(false);
   const router = useRouter();
 
-useEffect(() => {
+  if (!mounted) return null;
+  useEffect(() => {
+    setMounted(true);
     const token = localStorage.getItem("token");
     const user = localStorage.getItem("user");
 
@@ -107,7 +110,7 @@ useEffect(() => {
       alert("Sanction Manager created successfully!");
       setEmail("");
       setPassword("");
-      
+
       // Refresh data
       const res = await api.get<DashboardData>("/admin/dashboard");
       setData(res.data);
@@ -140,66 +143,60 @@ useEffect(() => {
         <nav className="flex-1 p-4 space-y-2">
           <button
             onClick={() => setActiveTab("overview")}
-            className={`w-full text-left px-4 py-3 rounded-xl font-semibold transition-all duration-200 flex items-center space-x-3 ${
-              activeTab === "overview" 
-                ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg scale-105" 
-                : "hover:bg-slate-700/50 text-slate-300"
-            }`}
+            className={`w-full text-left px-4 py-3 rounded-xl font-semibold transition-all duration-200 flex items-center space-x-3 ${activeTab === "overview"
+              ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg scale-105"
+              : "hover:bg-slate-700/50 text-slate-300"
+              }`}
           >
             <span className="text-xl">📊</span>
             <span>Overview</span>
           </button>
           <button
             onClick={() => setActiveTab("users")}
-            className={`w-full text-left px-4 py-3 rounded-xl font-semibold transition-all duration-200 flex items-center space-x-3 ${
-              activeTab === "users" 
-                ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg scale-105" 
-                : "hover:bg-slate-700/50 text-slate-300"
-            }`}
+            className={`w-full text-left px-4 py-3 rounded-xl font-semibold transition-all duration-200 flex items-center space-x-3 ${activeTab === "users"
+              ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg scale-105"
+              : "hover:bg-slate-700/50 text-slate-300"
+              }`}
           >
             <span className="text-xl">👥</span>
             <span>User Journey</span>
           </button>
           <button
             onClick={() => setActiveTab("sanctions")}
-            className={`w-full text-left px-4 py-3 rounded-xl font-semibold transition-all duration-200 flex items-center space-x-3 ${
-              activeTab === "sanctions" 
-                ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg scale-105" 
-                : "hover:bg-slate-700/50 text-slate-300"
-            }`}
+            className={`w-full text-left px-4 py-3 rounded-xl font-semibold transition-all duration-200 flex items-center space-x-3 ${activeTab === "sanctions"
+              ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg scale-105"
+              : "hover:bg-slate-700/50 text-slate-300"
+              }`}
           >
             <span className="text-xl">⚖️</span>
             <span>Sanction Manager</span>
           </button>
           <button
             onClick={() => setActiveTab("audit")}
-            className={`w-full text-left px-4 py-3 rounded-xl font-semibold transition-all duration-200 flex items-center space-x-3 ${
-              activeTab === "audit" 
-                ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg scale-105" 
-                : "hover:bg-slate-700/50 text-slate-300"
-            }`}
+            className={`w-full text-left px-4 py-3 rounded-xl font-semibold transition-all duration-200 flex items-center space-x-3 ${activeTab === "audit"
+              ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg scale-105"
+              : "hover:bg-slate-700/50 text-slate-300"
+              }`}
           >
             <span className="text-xl">📝</span>
             <span>Audit Logs</span>
           </button>
           <button
             onClick={() => setActiveTab("createUser")}
-            className={`w-full text-left px-4 py-3 rounded-xl font-semibold transition-all duration-200 flex items-center space-x-3 ${
-              activeTab === "createUser" 
-                ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg scale-105" 
-                : "hover:bg-slate-700/50 text-slate-300"
-            }`}
+            className={`w-full text-left px-4 py-3 rounded-xl font-semibold transition-all duration-200 flex items-center space-x-3 ${activeTab === "createUser"
+              ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg scale-105"
+              : "hover:bg-slate-700/50 text-slate-300"
+              }`}
           >
             <span className="text-xl">➕</span>
             <span>Create User</span>
           </button>
           <button
             onClick={() => setActiveTab("demo")}
-            className={`w-full text-left px-4 py-3 rounded-xl font-semibold transition-all duration-200 flex items-center space-x-3 ${
-              activeTab === "demo" 
-                ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg scale-105" 
-                : "hover:bg-slate-700/50 text-slate-300"
-            }`}
+            className={`w-full text-left px-4 py-3 rounded-xl font-semibold transition-all duration-200 flex items-center space-x-3 ${activeTab === "demo"
+              ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg scale-105"
+              : "hover:bg-slate-700/50 text-slate-300"
+              }`}
           >
             <span className="text-xl">🎭</span>
             <span>Demo Mode</span>
@@ -219,11 +216,11 @@ useEffect(() => {
             </div>
           </div>
           <button
-onClick={() => {
-  localStorage.removeItem("token");
-  localStorage.removeItem("user");
-  router.push("/admin/login");
-}}
+            onClick={() => {
+              localStorage.removeItem("token");
+              localStorage.removeItem("user");
+              router.push("/admin/login");
+            }}
             className="w-full px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-xl transition-all duration-200"
           >
             Logout
@@ -239,7 +236,7 @@ onClick={() => {
               <h2 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">System Overview</h2>
               <p className="text-gray-600">Real-time system statistics and metrics</p>
             </div>
-            
+
             <div className="grid grid-cols-4 gap-6 mb-8">
               <div className="bg-gradient-to-br from-blue-500 to-blue-600 p-6 rounded-2xl shadow-xl text-white transform hover:scale-105 transition-all duration-200">
                 <div className="flex items-center justify-between mb-4">
@@ -292,12 +289,11 @@ onClick={() => {
                       <p className="text-sm text-gray-500">by {doc.owner.email}</p>
                     </div>
                     <div className="text-right">
-                      <span className={`px-4 py-2 rounded-full text-xs font-bold shadow-sm ${
-                        doc.status === "APPROVED" ? "bg-green-100 text-green-700" :
+                      <span className={`px-4 py-2 rounded-full text-xs font-bold shadow-sm ${doc.status === "APPROVED" ? "bg-green-100 text-green-700" :
                         doc.status === "REJECTED" ? "bg-red-100 text-red-700" :
-                        doc.status === "FLAGGED" ? "bg-yellow-100 text-yellow-700" :
-                        "bg-gray-100 text-gray-700"
-                      }`}>
+                          doc.status === "FLAGGED" ? "bg-yellow-100 text-yellow-700" :
+                            "bg-gray-100 text-gray-700"
+                        }`}>
                         {doc.status}
                       </span>
                     </div>
@@ -314,11 +310,11 @@ onClick={() => {
               <h2 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">User Journey Tracking</h2>
               <p className="text-gray-600">Monitor all customer activities and document uploads</p>
             </div>
-            
+
             <div className="space-y-6">
               {customers.map((user) => {
                 const userDocs = data.documents.filter((d) => d.owner.id === user.id);
-                
+
                 return (
                   <div key={user.id} className="bg-white p-8 rounded-2xl shadow-xl border border-gray-100 hover:shadow-2xl transition-all duration-200">
                     <div className="flex justify-between items-start mb-6">
@@ -361,21 +357,19 @@ onClick={() => {
                               <span className="font-semibold text-gray-900">{doc.title}</span>
                               <div className="flex gap-2 items-center">
                                 {doc.riskSnapshot && (
-                                  <span className={`px-3 py-1 rounded-full text-xs font-bold ${
-                                    doc.riskSnapshot.riskLevel === "LOW" ? "bg-green-100 text-green-700" :
+                                  <span className={`px-3 py-1 rounded-full text-xs font-bold ${doc.riskSnapshot.riskLevel === "LOW" ? "bg-green-100 text-green-700" :
                                     doc.riskSnapshot.riskLevel === "MEDIUM" ? "bg-yellow-100 text-yellow-700" :
-                                    doc.riskSnapshot.riskLevel === "HIGH" ? "bg-orange-100 text-orange-700" :
-                                    "bg-red-100 text-red-700"
-                                  }`}>
+                                      doc.riskSnapshot.riskLevel === "HIGH" ? "bg-orange-100 text-orange-700" :
+                                        "bg-red-100 text-red-700"
+                                    }`}>
                                     {doc.riskSnapshot.riskLevel}
                                   </span>
                                 )}
-                                <span className={`px-3 py-1 rounded-full text-xs font-bold ${
-                                  doc.status === "APPROVED" ? "bg-green-100 text-green-700" :
+                                <span className={`px-3 py-1 rounded-full text-xs font-bold ${doc.status === "APPROVED" ? "bg-green-100 text-green-700" :
                                   doc.status === "REJECTED" ? "bg-red-100 text-red-700" :
-                                  doc.status === "FLAGGED" ? "bg-yellow-100 text-yellow-700" :
-                                  "bg-gray-100 text-gray-700"
-                                }`}>
+                                    doc.status === "FLAGGED" ? "bg-yellow-100 text-yellow-700" :
+                                      "bg-gray-100 text-gray-700"
+                                  }`}>
                                   {doc.status}
                                 </span>
                               </div>
@@ -397,7 +391,7 @@ onClick={() => {
               <h2 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-2">Sanction Manager Journey</h2>
               <p className="text-gray-600">Track all sanction decisions and manager activities</p>
             </div>
-            
+
             <div className="mb-8 bg-gradient-to-br from-purple-50 to-pink-50 p-8 rounded-2xl shadow-xl border border-purple-100">
               <h3 className="text-2xl font-bold mb-6 flex items-center text-purple-900">
                 <span className="w-2 h-8 bg-gradient-to-b from-purple-500 to-pink-600 rounded-full mr-3"></span>
@@ -441,11 +435,10 @@ onClick={() => {
                           by {sanction.decidedBy.email}
                         </p>
                       </div>
-                      <span className={`px-4 py-2 rounded-full text-xs font-bold shadow-sm ${
-                        sanction.decision === "APPROVE" ? "bg-green-100 text-green-700" :
+                      <span className={`px-4 py-2 rounded-full text-xs font-bold shadow-sm ${sanction.decision === "APPROVE" ? "bg-green-100 text-green-700" :
                         sanction.decision === "REJECT" ? "bg-red-100 text-red-700" :
-                        "bg-yellow-100 text-yellow-700"
-                      }`}>
+                          "bg-yellow-100 text-yellow-700"
+                        }`}>
                         {sanction.decision}
                       </span>
                     </div>
@@ -470,7 +463,7 @@ onClick={() => {
               <h2 className="text-4xl font-bold bg-gradient-to-r from-green-600 to-teal-600 bg-clip-text text-transparent mb-2">Audit Logs</h2>
               <p className="text-gray-600">Complete system activity tracking and monitoring</p>
             </div>
-            
+
             <div className="bg-white p-8 rounded-2xl shadow-xl border border-gray-100">
               <div className="space-y-3">
                 {data.auditLogs.map((log) => (
@@ -504,7 +497,7 @@ onClick={() => {
               <h2 className="text-4xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent mb-2">Create Sanction Manager</h2>
               <p className="text-gray-600">Add new sanction managers to the system</p>
             </div>
-            
+
             <div className="bg-white p-10 rounded-2xl shadow-xl border border-gray-100 max-w-2xl">
               <form onSubmit={handleCreateSanctionManager} className="space-y-6">
                 <div>
@@ -573,7 +566,7 @@ onClick={() => {
               <h2 className="text-4xl font-bold bg-gradient-to-r from-indigo-600 to-pink-600 bg-clip-text text-transparent mb-2">🎭 Demo Mode - Quick Access</h2>
               <p className="text-gray-600 font-medium">Quick login links for presentation. Click to open in new tab.</p>
             </div>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* User Demo */}
               <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-8 rounded-2xl shadow-lg border-2 border-blue-200">
@@ -588,7 +581,7 @@ onClick={() => {
                     <p className="text-sm text-blue-700">Document Upload & Management</p>
                   </div>
                 </div>
-                
+
                 <div className="bg-white p-4 rounded-lg mb-4">
                   <p className="text-sm font-semibold text-gray-700 mb-2">Demo Credentials:</p>
                   <p className="text-sm text-gray-600">Email: <span className="font-mono bg-gray-100 px-2 py-1 rounded">user@demo.com</span></p>
@@ -626,7 +619,7 @@ onClick={() => {
                     <p className="text-sm text-purple-700">Review & Approve Documents</p>
                   </div>
                 </div>
-                
+
                 <div className="bg-white p-4 rounded-lg mb-4">
                   <p className="text-sm font-semibold text-gray-700 mb-2">Demo Credentials:</p>
                   <p className="text-sm text-gray-600">Email: <span className="font-mono bg-gray-100 px-2 py-1 rounded">sanction@demo.com</span></p>

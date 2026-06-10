@@ -20,9 +20,12 @@ interface DocumentsResponse {
 export default function DashboardPage() {
   const [documents, setDocuments] = useState<Document[]>([]);
   const [loading, setLoading] = useState(true);
+  const [mounted, setMounted] = useState(false);
   const router = useRouter();
+  if (!mounted) return null;
 
   useEffect(() => {
+    setMounted(true);
     const token = localStorage.getItem("token");
     if (!token) {
       router.push("/login");
@@ -134,12 +137,11 @@ export default function DashboardPage() {
                     <span className="text-sm font-semibold text-gray-500">
                       {new Date(doc.createdAt).toLocaleDateString()}
                     </span>
-                    <span className={`px-3 py-1 rounded-full text-xs font-bold border ${
-                      doc.status === "APPROVED" ? "bg-green-100 text-green-800 border-green-300" :
+                    <span className={`px-3 py-1 rounded-full text-xs font-bold border ${doc.status === "APPROVED" ? "bg-green-100 text-green-800 border-green-300" :
                       doc.status === "REJECTED" ? "bg-red-100 text-red-800 border-red-300" :
-                      doc.status === "FLAGGED" ? "bg-yellow-100 text-yellow-800 border-yellow-300" :
-                      "bg-gray-100 text-gray-700 border-gray-300"
-                    }`}>
+                        doc.status === "FLAGGED" ? "bg-yellow-100 text-yellow-800 border-yellow-300" :
+                          "bg-gray-100 text-gray-700 border-gray-300"
+                      }`}>
                       {doc.status === "APPROVED" ? "✅" : doc.status === "REJECTED" ? "❌" : doc.status === "FLAGGED" ? "🚩" : "⏳"} {doc.status}
                     </span>
                   </div>
